@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendFormAjax = exports.sendContainerDataAjax = exports.sendDataAjax = exports.sendAjax = void 0;
-var axios = require('axios/dist/node/axios.cjs');
+var axios = require('axios/dist/browser/axios.cjs');
 function sendAjax(uri, params, method) {
     if (!method)
         method = 'get';

@@ -1,4 +1,4 @@
-const axios = require('axios/dist/node/axios.cjs');
+const axios = require('axios/dist/browser/axios.cjs');
 
 export type ReactionObj = 
     Record<string|number, (res: Record<string, any>) => void>;
