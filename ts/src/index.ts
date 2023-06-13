@@ -3,11 +3,16 @@ import axios, { AxiosResponse } from "axios";
 export type ReactionObj = 
     Record<string|number, (res: AxiosResponse<any, any>) => void>;
 
+export type FormParams = {
+    action: string,
+    method: string,
+}
+
 function sendAjax(
     uri: string, 
     params: Record<string|number, any>, 
     method: string
-) {
+): Promise<AxiosResponse<any, any>> {
     if(!method) method = 'get';
     if((params instanceof FormData) && (method === 'get')) {
         const formDataObj = {};
@@ -29,7 +34,7 @@ function sendAjax(
 
 function sendDataAjax(
     data: any, 
-    formParams: any, 
+    formParams: FormParams, 
     reactionsObj: ReactionObj = {}
 ) {
     sendAjax(formParams.action ?? '', data, formParams.method ?? 'get')
@@ -45,7 +50,7 @@ function sendDataAjax(
 
 function sendContainerDataAjax(
     container: HTMLElement, 
-    formParams: Record<string|number, any> = {}, 
+    formParams: FormParams, 
     extraParams: Record<string|number, any> = {}, 
     reactionsObj: ReactionObj = {}
 ) {

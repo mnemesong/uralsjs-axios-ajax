@@ -37,7 +37,6 @@ function sendDataAjax(data, formParams, reactionsObj) {
     });
 }
 function sendContainerDataAjax(container, formParams, extraParams, reactionsObj) {
-    if (formParams === void 0) { formParams = {}; }
     if (extraParams === void 0) { extraParams = {}; }
     if (reactionsObj === void 0) { reactionsObj = {}; }
     var formData = new FormData();
