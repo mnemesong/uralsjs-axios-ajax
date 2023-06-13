@@ -8,7 +8,7 @@ export type FormParams = {
     method: string,
 }
 
-function sendAjax(
+export function sendAjax(
     uri: string, 
     params: Record<string|number, any>, 
     method: string
@@ -32,7 +32,7 @@ function sendAjax(
     return axios(reqParams);
 }
 
-function sendDataAjax(
+export function sendDataAjax(
     data: any, 
     formParams: FormParams, 
     reactionsObj: ReactionObj = {}
@@ -48,7 +48,7 @@ function sendDataAjax(
         })
 }
 
-function sendContainerDataAjax(
+export function sendContainerDataAjax(
     container: HTMLElement, 
     formParams: FormParams, 
     extraParams: Record<string|number, any> = {}, 
@@ -91,7 +91,7 @@ function sendContainerDataAjax(
     sendDataAjax(formData, formParams, reactionsObj);
 }
 
-function sendFormAjax(
+export function sendFormAjax(
     form: HTMLFormElement, 
     extraParams: Record<string|number, any> = {}, 
     reactionsObj: ReactionObj = {}

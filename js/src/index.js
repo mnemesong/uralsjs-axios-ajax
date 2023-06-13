@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.sendFormAjax = exports.sendContainerDataAjax = exports.sendDataAjax = exports.sendAjax = void 0;
 var axios_1 = __importDefault(require("axios"));
 function sendAjax(uri, params, method) {
     if (!method)
@@ -24,6 +25,7 @@ function sendAjax(uri, params, method) {
     }
     return (0, axios_1.default)(reqParams);
 }
+exports.sendAjax = sendAjax;
 function sendDataAjax(data, formParams, reactionsObj) {
     var _a, _b;
     if (reactionsObj === void 0) { reactionsObj = {}; }
@@ -36,6 +38,7 @@ function sendDataAjax(data, formParams, reactionsObj) {
         }
     });
 }
+exports.sendDataAjax = sendDataAjax;
 function sendContainerDataAjax(container, formParams, extraParams, reactionsObj) {
     if (extraParams === void 0) { extraParams = {}; }
     if (reactionsObj === void 0) { reactionsObj = {}; }
@@ -79,9 +82,11 @@ function sendContainerDataAjax(container, formParams, extraParams, reactionsObj)
     });
     sendDataAjax(formData, formParams, reactionsObj);
 }
+exports.sendContainerDataAjax = sendContainerDataAjax;
 function sendFormAjax(form, extraParams, reactionsObj) {
     var _a, _b;
     if (extraParams === void 0) { extraParams = {}; }
     if (reactionsObj === void 0) { reactionsObj = {}; }
     sendContainerDataAjax(form, { action: (_a = form.action) !== null && _a !== void 0 ? _a : '', method: (_b = form.method) !== null && _b !== void 0 ? _b : 'get' }, extraParams, reactionsObj);
 }
+exports.sendFormAjax = sendFormAjax;
