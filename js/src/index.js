@@ -1,10 +1,7 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendFormAjax = exports.sendContainerDataAjax = exports.sendDataAjax = exports.sendAjax = void 0;
-var axios_1 = __importDefault(require("axios"));
+var axios = require('axios/dist/node/axios.cjs');
 function sendAjax(uri, params, method) {
     if (!method)
         method = 'get';
@@ -23,7 +20,7 @@ function sendAjax(uri, params, method) {
     if (method !== 'get') {
         reqParams['headers'] = { "Content-Type": "multipart/form-data" };
     }
-    return (0, axios_1.default)(reqParams);
+    return axios(reqParams);
 }
 exports.sendAjax = sendAjax;
 function sendDataAjax(data, formParams, reactionsObj) {

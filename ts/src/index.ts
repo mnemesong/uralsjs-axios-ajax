@@ -1,7 +1,7 @@
-import axios, { AxiosResponse } from "axios";
+const axios = require('axios/dist/node/axios.cjs');
 
 export type ReactionObj = 
-    Record<string|number, (res: AxiosResponse<any, any>) => void>;
+    Record<string|number, (res: Record<string, any>) => void>;
 
 export type FormParams = {
     action: string,
@@ -12,7 +12,7 @@ export function sendAjax(
     uri: string, 
     params: Record<string|number, any>, 
     method: string
-): Promise<AxiosResponse<any, any>> {
+): Promise<any> {
     if(!method) method = 'get';
     if((params instanceof FormData) && (method === 'get')) {
         const formDataObj = {};
