@@ -1,5 +1,3 @@
-const axios = require('axios/dist/browser/axios.cjs');
-
 export type ReactionObj = 
     Record<string|number, (res: Record<string, any>) => void>;
 
@@ -8,11 +6,15 @@ export type FormParams = {
     method: string,
 }
 
+export type Axios = (params: any) => Promise<any>
+
 export function sendAjax(
+    axios: Axios,
     uri: string, 
     params: Record<string|number, any>, 
     method: string
 ): Promise<any> {
+    try{
     if(!method) method = 'get';
     if((params instanceof FormData) && (method === 'get')) {
         const formDataObj = {};
@@ -29,15 +31,20 @@ export function sendAjax(
     if(method !== 'get') {
         reqParams['headers'] = {"Content-Type": "multipart/form-data"};
     }
-    return axios(reqParams);
+    return axios(reqParams)
+        .catch( (r) => console.log('Cannot request url: ', r));
+    } catch (e) {
+        console.log("error: ", e)
+    }
 }
 
 export function sendDataAjax(
+    axios: Axios,
     data: any, 
     formParams: FormParams, 
     reactionsObj: ReactionObj = {}
 ) {
-    sendAjax(formParams.action ?? '', data, formParams.method ?? 'get')
+    sendAjax(axios, formParams.action ?? '', data, formParams.method ?? 'get')
         .then(function(response) {
             for(let key in reactionsObj)
             {
@@ -49,6 +56,7 @@ export function sendDataAjax(
 }
 
 export function sendContainerDataAjax(
+    axios: Axios,
     container: HTMLElement, 
     formParams: FormParams, 
     extraParams: Record<string|number, any> = {}, 
@@ -88,15 +96,18 @@ export function sendContainerDataAjax(
     selects.forEach((select) => {
         formData.append(select.name, select.value);
     });
-    sendDataAjax(formData, formParams, reactionsObj);
+    console.log(formData);
+    sendDataAjax(axios, formData, formParams, reactionsObj);
 }
 
 export function sendFormAjax(
+    axios: Axios,
     form: HTMLFormElement, 
     extraParams: Record<string|number, any> = {}, 
     reactionsObj: ReactionObj = {}
 ) {
     sendContainerDataAjax(
+        axios,
         form,
         {action: form.action ?? '', method: form.method ?? 'get'},
         extraParams,
