@@ -24,7 +24,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var index = __importStar(require("../src"));
-var axios = require('axios/dist/browser/axios.cjs');
 document.getElementById('send-form-btn').onclick = function () {
-    index.sendFormAjax(axios, document.getElementById('send-form-btn').closest('form'), { extraP: 12 }, { success: function () { return console.log('success!'); } });
+    index.sendFormAjax(index.axiosBrowser(), document.getElementById('send-form-btn').closest('form'), { extraP: 12 }, { success: function () { return console.log('success!'); } });
 };

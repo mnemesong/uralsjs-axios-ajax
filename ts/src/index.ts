@@ -8,6 +8,9 @@ export type FormParams = {
 
 export type Axios = (params: any) => Promise<any>
 
+export const axiosBrowser = () => {return require('axios/dist/browser/axios.cjs');}
+export const axiosNode = () => {return  require('axios/dist/node/axios.cjs');}
+
 export function sendAjax(
     axios: Axios,
     uri: string, 
@@ -96,7 +99,6 @@ export function sendContainerDataAjax(
     selects.forEach((select) => {
         formData.append(select.name, select.value);
     });
-    console.log(formData);
     sendDataAjax(axios, formData, formParams, reactionsObj);
 }
 

@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendFormAjax = exports.sendContainerDataAjax = exports.sendDataAjax = exports.sendAjax = void 0;
+exports.sendFormAjax = exports.sendContainerDataAjax = exports.sendDataAjax = exports.sendAjax = exports.axiosNode = exports.axiosBrowser = void 0;
+var axiosBrowser = function () { return require('axios/dist/browser/axios.cjs'); };
+exports.axiosBrowser = axiosBrowser;
+var axiosNode = function () { return require('axios/dist/node/axios.cjs'); };
+exports.axiosNode = axiosNode;
 function sendAjax(axios, uri, params, method) {
     try {
         if (!method)
@@ -82,7 +86,6 @@ function sendContainerDataAjax(axios, container, formParams, extraParams, reacti
     selects.forEach(function (select) {
         formData.append(select.name, select.value);
     });
-    console.log(formData);
     sendDataAjax(axios, formData, formParams, reactionsObj);
 }
 exports.sendContainerDataAjax = sendContainerDataAjax;

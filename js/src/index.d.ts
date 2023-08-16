@@ -4,6 +4,8 @@ export type FormParams = {
     method: string;
 };
 export type Axios = (params: any) => Promise<any>;
+export declare const axiosBrowser: () => any;
+export declare const axiosNode: () => any;
 export declare function sendAjax(axios: Axios, uri: string, params: Record<string | number, any>, method: string): Promise<any>;
 export declare function sendDataAjax(axios: Axios, data: any, formParams: FormParams, reactionsObj?: ReactionObj): void;
 export declare function sendContainerDataAjax(axios: Axios, container: HTMLElement, formParams: FormParams, extraParams?: Record<string | number, any>, reactionsObj?: ReactionObj): void;
