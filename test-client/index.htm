@@ -8,10 +8,15 @@
 </head>
 <body>
     <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 20px;">
-        <form id="getForm" action="http://localhost/api" method="get">
+        <form id="GetForm" 
+              action="http://localhost/api" 
+              method="get" 
+              style="display: grid; grid-gap: 10px;">
             <input name="textinput" value="textval">
             <textarea name="textarea">textareaval</textarea>
-            <button type="button" id="sendGetBtn">Send</button>
+            <button type="button" id="sendFormGetBtn">Send Form Get</button>
+            <button type="button" id="sendContainerGetBtn">Send Container Get</button>
+            <button type="button" id="sendDataGetBtn">Send Data Get</button>
         </form>
     </div>
 </body>

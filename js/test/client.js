@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -22,11 +33,21 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+var assert_1 = __importDefault(require("assert"));
 var axiosAjax = __importStar(require("../src"));
 var data = __importStar(require("./data"));
-var getForm = document.querySelector('#getForm');
-[getForm].forEach(function (form) {
+['Get'].forEach(function (met) {
+    var form = document.querySelector("#".concat(met, "Form"));
+    assert_1.default.ok(form instanceof HTMLFormElement);
+    var reactionObj = {
+        success: function (res) {
+            console.log('Success!');
+        }
+    };
     Object.keys(data.data).forEach(function (k) {
         var select = "[name=\"".concat(k, "\"]");
         var el = form.querySelector(select);
@@ -40,12 +61,16 @@ var getForm = document.querySelector('#getForm');
             throw new Error("can not find element by selector " + select);
         }
     });
-    var sendGetBtn = document.getElementById('sendGetBtn');
-    sendGetBtn.onclick = function () {
-        axiosAjax.sendFormAjax(sendGetBtn.closest('form'), data.extraparam, {
-            success: function (res) {
-                console.log('Success!');
-            }
-        });
+    var sendFormGetBtn = document.getElementById("sendForm".concat(met, "Btn"));
+    sendFormGetBtn.onclick = function () {
+        axiosAjax.sendFormAjax(sendFormGetBtn.closest('form'), data.extraparam, reactionObj);
+    };
+    var sendContainerBtn = document.getElementById("sendContainer".concat(met, "Btn"));
+    sendContainerBtn.onclick = function () {
+        axiosAjax.sendContainerDataAjax(sendFormGetBtn.closest('form'), { action: form.action, method: form.method }, data.extraparam, reactionObj);
+    };
+    var sendDataBtn = document.getElementById("sendData".concat(met, "Btn"));
+    sendDataBtn.onclick = function () {
+        axiosAjax.sendDataAjax(__assign(__assign({}, data.data), data.extraparam), { action: form.action, method: form.method }, reactionObj);
     };
 });
