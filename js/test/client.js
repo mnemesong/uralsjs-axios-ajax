@@ -67,7 +67,7 @@ var data = __importStar(require("./data"));
             form: sendFormGetBtn.closest('form'),
             extraparam: data.extraparam
         });
-        axiosAjax.sendFormAjax(sendFormGetBtn.closest('form'), data.extraparam, reactionObj);
+        axiosAjax.sendFormAjax(axiosAjax.axiosBrowser(), sendFormGetBtn.closest('form'), data.extraparam, reactionObj);
     };
     var sendContainerBtn = document.getElementById("sendContainer".concat(met, "Btn"));
     sendContainerBtn.onclick = function () {
@@ -76,10 +76,10 @@ var data = __importStar(require("./data"));
             formParams: { action: form.action, method: met.toLowerCase() },
             extraparam: data.extraparam
         });
-        axiosAjax.sendContainerDataAjax(sendFormGetBtn.closest('form'), { action: form.action, method: met.toLowerCase() }, data.extraparam, reactionObj);
+        axiosAjax.sendContainerDataAjax(axiosAjax.axiosBrowser(), sendFormGetBtn.closest('form'), { action: form.action, method: met.toLowerCase() }, data.extraparam, reactionObj);
     };
     var sendDataBtn = document.getElementById("sendData".concat(met, "Btn"));
     sendDataBtn.onclick = function () {
-        axiosAjax.sendDataAjax(__assign(__assign({}, data.data), data.extraparam), { action: form.action, method: met.toLowerCase() }, reactionObj);
+        axiosAjax.sendDataAjax(axiosAjax.axiosBrowser(), __assign(__assign({}, data.data), data.extraparam), { action: form.action, method: met.toLowerCase() }, reactionObj);
     };
 });

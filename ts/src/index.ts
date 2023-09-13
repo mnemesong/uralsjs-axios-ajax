@@ -1,4 +1,9 @@
-const axios = require('axios/dist/browser/axios.cjs')
+import {Axios} from "axios"
+
+export const axiosBrowser = 
+    () => require('axios/dist/browser/axios.cjs') as typeof Axios.constructor
+export const axiosNode = 
+    () => require('axios/dist/node/axios.cjs') as typeof Axios.constructor
 
 export type ReactionObj = 
     Record<string|number, (res: Record<string, any>) => void>
@@ -11,6 +16,7 @@ export type FormParams = {
 }
 
 export function sendAjax(
+    axios: typeof Axios.constructor,
     uri: string, 
     params: Record<string|number, any>, 
     method: Method
@@ -35,11 +41,12 @@ export function sendAjax(
 }
 
 export function sendDataAjax(
+    axios: typeof Axios.constructor,
     data: any, 
     formParams: FormParams, 
     reactionsObj: ReactionObj = {}
 ) {
-    sendAjax(formParams.action ?? '', data, formParams.method ?? 'get')
+    sendAjax(axios, formParams.action ?? '', data, formParams.method ?? 'get')
         .then(function(response) {
             for(let key in reactionsObj)
             {
@@ -51,6 +58,7 @@ export function sendDataAjax(
 }
 
 export function sendContainerDataAjax(
+    axios: typeof Axios.constructor,
     container: HTMLElement, 
     formParams: FormParams, 
     extraParams: Record<string|number, any> = {}, 
@@ -90,10 +98,11 @@ export function sendContainerDataAjax(
     selects.forEach((select) => {
         formData.append(select.name, select.value);
     });
-    sendDataAjax(formData, formParams, reactionsObj);
+    sendDataAjax(axios, formData, formParams, reactionsObj);
 }
 
 export function sendFormAjax(
+    axios: typeof Axios.constructor,
     form: HTMLFormElement, 
     extraParams: Record<string|number, any> = {}, 
     reactionsObj: ReactionObj = {}
@@ -105,6 +114,7 @@ export function sendFormAjax(
     const formAction = form.action
     const formActionValid = formAction ? formAction : ''
     sendContainerDataAjax(
+        axios,
         form,
         {action: formActionValid, method: metValid},
         extraParams,

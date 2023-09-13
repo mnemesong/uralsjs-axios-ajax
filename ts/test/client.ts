@@ -31,6 +31,7 @@ import * as data from "./data"
             extraparam: data.extraparam
         })
         axiosAjax.sendFormAjax(
+            axiosAjax.axiosBrowser(),
             sendFormGetBtn.closest('form'),
             data.extraparam,
             reactionObj
@@ -45,6 +46,7 @@ import * as data from "./data"
             extraparam: data.extraparam
         })
         axiosAjax.sendContainerDataAjax(
+            axiosAjax.axiosBrowser(),
             sendFormGetBtn.closest('form'),
             {action: form.action, method: met.toLowerCase() as axiosAjax.Method},
             data.extraparam,
@@ -55,6 +57,7 @@ import * as data from "./data"
     const sendDataBtn = document.getElementById(`sendData${met}Btn`)
     sendDataBtn.onclick = () => {
         axiosAjax.sendDataAjax(
+            axiosAjax.axiosBrowser(),
             {...data.data, ...data.extraparam},
             {action: form.action, method: met.toLowerCase() as axiosAjax.Method},
             reactionObj

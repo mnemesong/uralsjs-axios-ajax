@@ -1,8 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendFormAjax = exports.sendContainerDataAjax = exports.sendDataAjax = exports.sendAjax = void 0;
-var axios = require('axios/dist/browser/axios.cjs');
-function sendAjax(uri, params, method) {
+exports.sendFormAjax = exports.sendContainerDataAjax = exports.sendDataAjax = exports.sendAjax = exports.axiosNode = exports.axiosBrowser = void 0;
+var axiosBrowser = function () { return require('axios/dist/browser/axios.cjs'); };
+exports.axiosBrowser = axiosBrowser;
+var axiosNode = function () { return require('axios/dist/node/axios.cjs'); };
+exports.axiosNode = axiosNode;
+function sendAjax(axios, uri, params, method) {
     if (!method)
         method = 'get';
     if ((params instanceof FormData) && (method !== 'multipart')) {
@@ -23,10 +26,10 @@ function sendAjax(uri, params, method) {
     return axios(reqParams);
 }
 exports.sendAjax = sendAjax;
-function sendDataAjax(data, formParams, reactionsObj) {
+function sendDataAjax(axios, data, formParams, reactionsObj) {
     var _a, _b;
     if (reactionsObj === void 0) { reactionsObj = {}; }
-    sendAjax((_a = formParams.action) !== null && _a !== void 0 ? _a : '', data, (_b = formParams.method) !== null && _b !== void 0 ? _b : 'get')
+    sendAjax(axios, (_a = formParams.action) !== null && _a !== void 0 ? _a : '', data, (_b = formParams.method) !== null && _b !== void 0 ? _b : 'get')
         .then(function (response) {
         for (var key in reactionsObj) {
             if (response.data[key]) {
@@ -36,7 +39,7 @@ function sendDataAjax(data, formParams, reactionsObj) {
     });
 }
 exports.sendDataAjax = sendDataAjax;
-function sendContainerDataAjax(container, formParams, extraParams, reactionsObj) {
+function sendContainerDataAjax(axios, container, formParams, extraParams, reactionsObj) {
     if (extraParams === void 0) { extraParams = {}; }
     if (reactionsObj === void 0) { reactionsObj = {}; }
     var formData = new FormData();
@@ -77,10 +80,10 @@ function sendContainerDataAjax(container, formParams, extraParams, reactionsObj)
     selects.forEach(function (select) {
         formData.append(select.name, select.value);
     });
-    sendDataAjax(formData, formParams, reactionsObj);
+    sendDataAjax(axios, formData, formParams, reactionsObj);
 }
 exports.sendContainerDataAjax = sendContainerDataAjax;
-function sendFormAjax(form, extraParams, reactionsObj) {
+function sendFormAjax(axios, form, extraParams, reactionsObj) {
     if (extraParams === void 0) { extraParams = {}; }
     if (reactionsObj === void 0) { reactionsObj = {}; }
     var met = (form.enctype === 'multipart/form-data')
@@ -89,6 +92,6 @@ function sendFormAjax(form, extraParams, reactionsObj) {
     var metValid = met ? met : 'get';
     var formAction = form.action;
     var formActionValid = formAction ? formAction : '';
-    sendContainerDataAjax(form, { action: formActionValid, method: metValid }, extraParams, reactionsObj);
+    sendContainerDataAjax(axios, form, { action: formActionValid, method: metValid }, extraParams, reactionsObj);
 }
 exports.sendFormAjax = sendFormAjax;
