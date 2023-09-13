@@ -1,17 +1,19 @@
-const axios = require('axios/dist/browser/axios.cjs');
+const axios = require('axios/dist/browser/axios.cjs')
 
 export type ReactionObj = 
-    Record<string|number, (res: Record<string, any>) => void>;
+    Record<string|number, (res: Record<string, any>) => void>
+
+export type Method = 'get' | 'post' | 'multipart' | 'put' | 'set' | 'delete' | 'fetch'
 
 export type FormParams = {
     action: string,
-    method: string,
+    method: Method,
 }
 
 export function sendAjax(
     uri: string, 
     params: Record<string|number, any>, 
-    method: string
+    method: Method
 ): Promise<any> {
     if(!method) method = 'get';
     if((params instanceof FormData) && (method === 'get')) {
@@ -26,7 +28,7 @@ export function sendAjax(
         params: method !== 'get' ? null : params,
         data: method !== 'get' ? params : null,
     };
-    if(method !== 'get') {
+    if(method === 'multipart') {
         reqParams['headers'] = {"Content-Type": "multipart/form-data"};
     }
     return axios(reqParams);
@@ -96,9 +98,15 @@ export function sendFormAjax(
     extraParams: Record<string|number, any> = {}, 
     reactionsObj: ReactionObj = {}
 ) {
+    const met: Method = (form.enctype === 'multipart/form-data')
+        ? 'multipart'
+        : (form.method as Method)
+    const metValid = met ? met : 'get'
+    const formAction = form.action
+    const formActionValid = formAction ? formAction : ''
     sendContainerDataAjax(
         form,
-        {action: form.action ?? '', method: form.method ?? 'get'},
+        {action: formActionValid, method: metValid},
         extraParams,
         reactionsObj
     )

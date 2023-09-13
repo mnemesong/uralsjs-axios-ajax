@@ -17,7 +17,7 @@ function sendAjax(uri, params, method) {
         params: method !== 'get' ? null : params,
         data: method !== 'get' ? params : null,
     };
-    if (method !== 'get') {
+    if (method === 'multipart') {
         reqParams['headers'] = { "Content-Type": "multipart/form-data" };
     }
     return axios(reqParams);
@@ -81,9 +81,14 @@ function sendContainerDataAjax(container, formParams, extraParams, reactionsObj)
 }
 exports.sendContainerDataAjax = sendContainerDataAjax;
 function sendFormAjax(form, extraParams, reactionsObj) {
-    var _a, _b;
     if (extraParams === void 0) { extraParams = {}; }
     if (reactionsObj === void 0) { reactionsObj = {}; }
-    sendContainerDataAjax(form, { action: (_a = form.action) !== null && _a !== void 0 ? _a : '', method: (_b = form.method) !== null && _b !== void 0 ? _b : 'get' }, extraParams, reactionsObj);
+    var met = (form.enctype === 'multipart/form-data')
+        ? 'multipart'
+        : form.method;
+    var metValid = met ? met : 'get';
+    var formAction = form.action;
+    var formActionValid = formAction ? formAction : '';
+    sendContainerDataAjax(form, { action: formActionValid, method: metValid }, extraParams, reactionsObj);
 }
 exports.sendFormAjax = sendFormAjax;
