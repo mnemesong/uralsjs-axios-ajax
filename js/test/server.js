@@ -41,6 +41,7 @@ var multer = __importStar(require("multer"));
 var data = __importStar(require("./data"));
 var assert = __importStar(require("assert"));
 var bodyParser = __importStar(require("body-parser"));
+var upload = multer.default({ dest: 'uploads/' });
 var app = express.default();
 app.use(express.static(path.resolve(module.path, "..", "..", 'test-client')));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -84,12 +85,14 @@ app.post("/post", function (req, res) {
                 + JSON.stringify(nominal) });
     }
 });
-app.post("/multipart", multer.default().none(), function (req, res) {
+app.post("/multipart", upload.array('fileinput'), function (req, res) {
     var params = req.body;
+    var files = req['files'];
     var nominal = __assign(__assign({}, data.data), data.extraparam);
+    console.log(files);
     try {
         assert.notDeepStrictEqual(params, nominal);
-        res.json({ success: 1 });
+        res.json({ success: 1, files: JSON.stringify(files) });
     }
     catch (e) {
         res.json({ error: JSON.stringify(params) + " is not equal "

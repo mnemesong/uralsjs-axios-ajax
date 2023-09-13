@@ -8,6 +8,8 @@ import * as assert from "assert"
 import * as bodyParser from "body-parser"
 import * as url from "url"
 
+const upload = multer.default({ dest: 'uploads/' })
+
 const app = express.default()
 
 app.use(express.static(path.resolve(module.path, "..", "..", 'test-client')))
@@ -56,12 +58,14 @@ app.post("/post", (req, res) => {
     }
 })
 
-app.post("/multipart", multer.default().none(), (req, res) => {
+app.post("/multipart", upload.array('fileinput'), (req, res) => {
     const params = req.body
+    const files = req['files']
     const nominal = {...data.data, ...data.extraparam}
+    console.log(files)
     try {
         assert.notDeepStrictEqual(params, nominal)
-        res.json({success: 1})
+        res.json({success: 1, files: JSON.stringify(files)})
     } catch (e) {
         res.json({error: JSON.stringify(params) + " is not equal " 
             + JSON.stringify(nominal)})
