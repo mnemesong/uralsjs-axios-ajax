@@ -28,6 +28,17 @@
             <button type="button" id="sendContainerPostBtn">Send Container Post</button>
             <button type="button" id="sendDataPostBtn">Send Data Post</button>
         </form>
+        <form id="MultipartForm" 
+              action="http://localhost/multipart" 
+              method="post" 
+              style="display: grid; grid-gap: 10px;"
+              enctype="multipart/form-data">
+            <input name="textinput" value="textval">
+            <textarea name="textarea">textareaval</textarea>
+            <button type="button" id="sendFormMultipartBtn">Send Form Multipart</button>
+            <button type="button" id="sendContainerMultipartBtn">Send Container Multipart</button>
+            <button type="button" id="sendDataMultipartBtn">Send Data Multipart</button>
+        </form>
     </div>
 </body>
 <script src="./bundle.js"></script>

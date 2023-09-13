@@ -2,7 +2,7 @@ import assert from "assert";
 import * as axiosAjax from "../src"
 import * as data from "./data"
 
-['Get' , 'Post'].forEach(met => {
+['Get' , 'Post', 'Multipart'].forEach(met => {
     const form = document.querySelector(`#${met}Form`);
     assert.ok(form instanceof HTMLFormElement)
 

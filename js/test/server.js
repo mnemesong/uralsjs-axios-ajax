@@ -37,6 +37,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var path = __importStar(require("path"));
 var fs = __importStar(require("fs"));
 var express = __importStar(require("express"));
+var multer = __importStar(require("multer"));
 var data = __importStar(require("./data"));
 var assert = __importStar(require("assert"));
 var bodyParser = __importStar(require("body-parser"));
@@ -64,6 +65,30 @@ app.post("/post", function (req, res) {
     var nominal = __assign(__assign({}, data.data), data.extraparam);
     try {
         assert.deepStrictEqual(params, nominal);
+        res.json({ success: 1 });
+    }
+    catch (e) {
+        res.json({ error: JSON.stringify(params) + " is not equal "
+                + JSON.stringify(nominal) });
+    }
+});
+app.post("/post", function (req, res) {
+    var params = req.body;
+    var nominal = __assign(__assign({}, data.data), data.extraparam);
+    try {
+        assert.deepStrictEqual(params, nominal);
+        res.json({ success: 1 });
+    }
+    catch (e) {
+        res.json({ error: JSON.stringify(params) + " is not equal "
+                + JSON.stringify(nominal) });
+    }
+});
+app.post("/multipart", multer.default().none(), function (req, res) {
+    var params = req.body;
+    var nominal = __assign(__assign({}, data.data), data.extraparam);
+    try {
+        assert.notDeepStrictEqual(params, nominal);
         res.json({ success: 1 });
     }
     catch (e) {

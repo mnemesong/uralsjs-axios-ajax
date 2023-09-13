@@ -40,7 +40,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var assert_1 = __importDefault(require("assert"));
 var axiosAjax = __importStar(require("../src"));
 var data = __importStar(require("./data"));
-['Get', 'Post'].forEach(function (met) {
+['Get', 'Post', 'Multipart'].forEach(function (met) {
     var form = document.querySelector("#".concat(met, "Form"));
     assert_1.default.ok(form instanceof HTMLFormElement);
     var reactionObj = {
