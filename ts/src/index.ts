@@ -16,14 +16,14 @@ export function sendAjax(
     method: Method
 ): Promise<any> {
     if(!method) method = 'get';
-    if((params instanceof FormData) && (method === 'get')) {
+    if((params instanceof FormData) && (method !== 'multipart')) {
         const formDataObj = {};
         params.forEach((v, k) => (formDataObj[k] = v));
         params = formDataObj;
     }
     let reqParams = {
-        method: method,
-        type: method,
+        method: (method === 'multipart') ? 'post' : method,
+        type: (method === 'multipart') ? 'post' : method,
         url: uri,
         params: method !== 'get' ? null : params,
         data: method !== 'get' ? params : null,

@@ -42,13 +42,25 @@ var assert = __importStar(require("assert"));
 var bodyParser = __importStar(require("body-parser"));
 var app = express.default();
 app.use(express.static(path.resolve(module.path, "..", "..", 'test-client')));
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.get('/', function (req, res) {
     res.send(fs.readFileSync(path.resolve(module.path, "..", "..", 'test-client', 'index.htm')).toString());
 });
-app.get("/api", function (req, res) {
+app.get("/get", function (req, res) {
     var params = req.query;
+    var nominal = __assign(__assign({}, data.data), data.extraparam);
+    try {
+        assert.deepStrictEqual(params, nominal);
+        res.json({ success: 1 });
+    }
+    catch (e) {
+        res.json({ error: JSON.stringify(params) + " is not equal "
+                + JSON.stringify(nominal) });
+    }
+});
+app.post("/post", function (req, res) {
+    var params = req.body;
     var nominal = __assign(__assign({}, data.data), data.extraparam);
     try {
         assert.deepStrictEqual(params, nominal);

@@ -7,9 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 20px;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 20px;">
         <form id="GetForm" 
-              action="http://localhost/api" 
+              action="http://localhost/get" 
               method="get" 
               style="display: grid; grid-gap: 10px;">
             <input name="textinput" value="textval">
@@ -17,6 +17,16 @@
             <button type="button" id="sendFormGetBtn">Send Form Get</button>
             <button type="button" id="sendContainerGetBtn">Send Container Get</button>
             <button type="button" id="sendDataGetBtn">Send Data Get</button>
+        </form>
+        <form id="PostForm" 
+              action="http://localhost/post" 
+              method="post" 
+              style="display: grid; grid-gap: 10px;">
+            <input name="textinput" value="textval">
+            <textarea name="textarea">textareaval</textarea>
+            <button type="button" id="sendFormPostBtn">Send Form Post</button>
+            <button type="button" id="sendContainerPostBtn">Send Container Post</button>
+            <button type="button" id="sendDataPostBtn">Send Data Post</button>
         </form>
     </div>
 </body>

@@ -6,14 +6,14 @@ var axios = require('axios/dist/browser/axios.cjs');
 function sendAjax(uri, params, method) {
     if (!method)
         method = 'get';
-    if ((params instanceof FormData) && (method === 'get')) {
+    if ((params instanceof FormData) && (method !== 'multipart')) {
         var formDataObj_1 = {};
         params.forEach(function (v, k) { return (formDataObj_1[k] = v); });
         params = formDataObj_1;
     }
     var reqParams = {
-        method: method,
-        type: method,
+        method: (method === 'multipart') ? 'post' : method,
+        type: (method === 'multipart') ? 'post' : method,
         url: uri,
         params: method !== 'get' ? null : params,
         data: method !== 'get' ? params : null,
@@ -137,7 +137,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var assert_1 = __importDefault(require("assert"));
 var axiosAjax = __importStar(require("../src"));
 var data = __importStar(require("./data"));
-['Get'].forEach(function (met) {
+['Get', 'Post'].forEach(function (met) {
     var form = document.querySelector("#".concat(met, "Form"));
     assert_1.default.ok(form instanceof HTMLFormElement);
     var reactionObj = {
@@ -160,15 +160,24 @@ var data = __importStar(require("./data"));
     });
     var sendFormGetBtn = document.getElementById("sendForm".concat(met, "Btn"));
     sendFormGetBtn.onclick = function () {
+        console.log("sendFormAjax", {
+            form: sendFormGetBtn.closest('form'),
+            extraparam: data.extraparam
+        });
         axiosAjax.sendFormAjax(sendFormGetBtn.closest('form'), data.extraparam, reactionObj);
     };
     var sendContainerBtn = document.getElementById("sendContainer".concat(met, "Btn"));
     sendContainerBtn.onclick = function () {
-        axiosAjax.sendContainerDataAjax(sendFormGetBtn.closest('form'), { action: form.action, method: form.method }, data.extraparam, reactionObj);
+        console.log("sendContainerBtn", {
+            form: sendFormGetBtn.closest('form'),
+            formParams: { action: form.action, method: met.toLowerCase() },
+            extraparam: data.extraparam
+        });
+        axiosAjax.sendContainerDataAjax(sendFormGetBtn.closest('form'), { action: form.action, method: met.toLowerCase() }, data.extraparam, reactionObj);
     };
     var sendDataBtn = document.getElementById("sendData".concat(met, "Btn"));
     sendDataBtn.onclick = function () {
-        axiosAjax.sendDataAjax(__assign(__assign({}, data.data), data.extraparam), { action: form.action, method: form.method }, reactionObj);
+        axiosAjax.sendDataAjax(__assign(__assign({}, data.data), data.extraparam), { action: form.action, method: met.toLowerCase() }, reactionObj);
     };
 });
 

@@ -2,7 +2,7 @@ import assert from "assert";
 import * as axiosAjax from "../src"
 import * as data from "./data"
 
-['Get'].forEach(met => {
+['Get' , 'Post'].forEach(met => {
     const form = document.querySelector(`#${met}Form`);
     assert.ok(form instanceof HTMLFormElement)
 
@@ -26,6 +26,10 @@ import * as data from "./data"
 
     const sendFormGetBtn = document.getElementById(`sendForm${met}Btn`)
     sendFormGetBtn.onclick = () => {
+        console.log("sendFormAjax", {
+            form: sendFormGetBtn.closest('form'),
+            extraparam: data.extraparam
+        })
         axiosAjax.sendFormAjax(
             sendFormGetBtn.closest('form'),
             data.extraparam,
@@ -35,9 +39,14 @@ import * as data from "./data"
 
     const sendContainerBtn = document.getElementById(`sendContainer${met}Btn`)
     sendContainerBtn.onclick = () => {
+        console.log("sendContainerBtn", {
+            form: sendFormGetBtn.closest('form'),
+            formParams: {action: form.action, method: met.toLowerCase() as axiosAjax.Method},
+            extraparam: data.extraparam
+        })
         axiosAjax.sendContainerDataAjax(
             sendFormGetBtn.closest('form'),
-            {action: form.action, method: form.method as axiosAjax.Method},
+            {action: form.action, method: met.toLowerCase() as axiosAjax.Method},
             data.extraparam,
             reactionObj
         )
@@ -47,7 +56,7 @@ import * as data from "./data"
     sendDataBtn.onclick = () => {
         axiosAjax.sendDataAjax(
             {...data.data, ...data.extraparam},
-            {action: form.action, method: form.method as axiosAjax.Method},
+            {action: form.action, method: met.toLowerCase() as axiosAjax.Method},
             reactionObj
         )
     }

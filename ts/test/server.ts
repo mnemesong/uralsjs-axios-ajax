@@ -11,7 +11,7 @@ import * as url from "url"
 const app = express.default()
 
 app.use(express.static(path.resolve(module.path, "..", "..", 'test-client')))
-app.use(bodyParser.urlencoded())
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
@@ -20,8 +20,20 @@ app.get('/', (req, res) => {
     ).toString())
 })
 
-app.get("/api", (req, res) => {
+app.get("/get", (req, res) => {
     const params = req.query
+    const nominal = {...data.data, ...data.extraparam}
+    try {
+        assert.deepStrictEqual(params, nominal)
+        res.json({success: 1})
+    } catch (e) {
+        res.json({error: JSON.stringify(params) + " is not equal " 
+            + JSON.stringify(nominal)})
+    }
+})
+
+app.post("/post", (req, res) => {
+    const params = req.body
     const nominal = {...data.data, ...data.extraparam}
     try {
         assert.deepStrictEqual(params, nominal)

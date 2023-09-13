@@ -5,14 +5,14 @@ var axios = require('axios/dist/browser/axios.cjs');
 function sendAjax(uri, params, method) {
     if (!method)
         method = 'get';
-    if ((params instanceof FormData) && (method === 'get')) {
+    if ((params instanceof FormData) && (method !== 'multipart')) {
         var formDataObj_1 = {};
         params.forEach(function (v, k) { return (formDataObj_1[k] = v); });
         params = formDataObj_1;
     }
     var reqParams = {
-        method: method,
-        type: method,
+        method: (method === 'multipart') ? 'post' : method,
+        type: (method === 'multipart') ? 'post' : method,
         url: uri,
         params: method !== 'get' ? null : params,
         data: method !== 'get' ? params : null,
