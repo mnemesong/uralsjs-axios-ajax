@@ -47,9 +47,8 @@ export type AjaxConfig<Data> =
     | AjaxConfigGet<Data>
     | AjaxConfigNotGet<Data>
 
-export const isGet = <Data>(ajaxConfig: AjaxConfig<Data>): boolean => {
-    return !(ajaxConfig.method && (ajaxConfig.method === "get"))
-}
+export const isGet = <Data>(ajaxConfig: AjaxConfig<Data>): boolean =>
+    (!ajaxConfig.method || (ajaxConfig.method === "get"))
 
 export type RequestSchema<Data> = {
     method: Method,
@@ -77,19 +76,19 @@ export type ResponseSchema = {
     config: RequestSchema<any>
 }
 
-export function ajaxConfigToReqSchema<Data>(ajaxConf: AjaxConfig<Data>) {
+export function ajaxConfigToReqSchema<Data>(ajaxConf: AjaxConfig<Data>): RequestSchema<Data> {
     let reqSchema: RequestSchema<Data> = ((!ajaxConf.method) || (ajaxConf.method === "get"))
         ? {
             url: ajaxConf.url,
             method: ajaxConf.method ? ajaxConf.method : "get",
-            data: null,
+            data: undefined,
             params: ajaxConf.queryParams
         }
         : {
             url: ajaxConf.url,
             method: ajaxConf.method,
             data: ajaxConf["body"]["data"],
-            params: null,
+            params: undefined,
         }
     if (ajaxConf["body"] && ajaxConf["body"]["contentType"]) {
         reqSchema.headers = { "Content-Type": ajaxConf["body"]["contentType"] }

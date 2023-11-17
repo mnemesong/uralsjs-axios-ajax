@@ -1,46 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 20px;">
-        <form id="GetForm" 
-              action="http://localhost/get" 
-              method="get" 
-              style="display: grid; grid-gap: 10px;">
+        <form id="GetForm" action="/get" method="get" style="display: grid; grid-gap: 10px;">
             <input name="textinput" value="textval">
             <textarea name="textarea">textareaval</textarea>
-            <button type="button" id="sendFormGetBtn">Send Form Get</button>
-            <button type="button" id="sendContainerGetBtn">Send Container Get</button>
-            <button type="button" id="sendDataGetBtn">Send Data Get</button>
+            <button type="button" id="sendGetFormBtn">Send Form Get</button>
+            <button type="button" id="sendGetFormDataBtn">Send Data Get</button>
         </form>
-        <form id="PostForm" 
-              action="http://localhost/post" 
-              method="post" 
-              style="display: grid; grid-gap: 10px;">
+        <form id="PostForm" action="/post" method="post" style="display: grid; grid-gap: 10px;">
             <input name="textinput" value="textval">
             <textarea name="textarea">textareaval</textarea>
-            <button type="button" id="sendFormPostBtn">Send Form Post</button>
-            <button type="button" id="sendContainerPostBtn">Send Container Post</button>
-            <button type="button" id="sendDataPostBtn">Send Data Post</button>
+            <button type="button" id="sendPostFormBtn">Send Form Post</button>
+            <button type="button" id="sendPostFormDataBtn">Send Data Post</button>
         </form>
-        <form id="MultipartForm" 
-              action="http://localhost/multipart" 
-              method="post" 
-              style="display: grid; grid-gap: 10px;"
-              enctype="multipart/form-data">
+        <form id="MultipartForm" action="/multipart" method="post" style="display: grid; grid-gap: 10px;"
+            enctype="multipart/form-data">
             <input name="textinput" value="textval">
             <textarea name="textarea">textareaval</textarea>
             <input name="fileinput" type="file">
-            <button type="button" id="sendFormMultipartBtn">Send Form Multipart</button>
-            <button type="button" id="sendContainerMultipartBtn">Send Container Multipart</button>
-            <button type="button" id="sendDataMultipartBtn">Send Data Multipart</button>
+            <button type="button" id="sendMultipartFormBtn">Send Form Multipart</button>
+            <button type="button" id="sendMultipartFormDataBtn">Send Data Multipart</button>
         </form>
     </div>
 </body>
 <script src="./bundle.js"></script>
+
 </html>

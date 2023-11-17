@@ -5,7 +5,9 @@
   "main": "js/src/index.js",
   "scripts": {
     "tsc": "tsc",
-    "test:unit": "mocha ./js/test"
+    "test:unit": "mocha ./js/test",
+    "build:browser": "browserify ./js/app-test/browser-test.js > test-client/bundle.js",
+    "run:input-server": "node ./js/app-test/test-server-input"
   },
   "keywords": [],
   "author": "Anatoly Starodubtsev <Tostar74@mail.ru>",

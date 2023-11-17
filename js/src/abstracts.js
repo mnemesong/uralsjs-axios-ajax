@@ -14,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ajaxConfigToReqSchema = exports.isGet = exports.defaultEnctype = void 0;
 exports.defaultEnctype = "application/x-www-form-urlencoded";
 var isGet = function (ajaxConfig) {
-    return !(ajaxConfig.method && (ajaxConfig.method === "get"));
+    return (!ajaxConfig.method || (ajaxConfig.method === "get"));
 };
 exports.isGet = isGet;
 function ajaxConfigToReqSchema(ajaxConf) {
@@ -22,14 +22,14 @@ function ajaxConfigToReqSchema(ajaxConf) {
         ? {
             url: ajaxConf.url,
             method: ajaxConf.method ? ajaxConf.method : "get",
-            data: null,
+            data: undefined,
             params: ajaxConf.queryParams
         }
         : {
             url: ajaxConf.url,
             method: ajaxConf.method,
             data: ajaxConf["body"]["data"],
-            params: null,
+            params: undefined,
         };
     if (ajaxConf["body"] && ajaxConf["body"]["contentType"]) {
         reqSchema.headers = { "Content-Type": ajaxConf["body"]["contentType"] };

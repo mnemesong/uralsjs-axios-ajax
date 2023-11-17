@@ -7,7 +7,8 @@ import {
     isGet,
     defaultEnctype,
     ExtraConfig,
-    Method
+    Method,
+    Enctype
 } from "./abstracts";
 
 export const axios = require('axios/dist/browser/axios.cjs') as typeof Axios.constructor
@@ -17,7 +18,9 @@ export type Data = FormData | Record<string | number, any>
 const formDataToRecord = (formData: FormData): Record<string | number, any> => {
     const obj = {}
     formData.forEach((v, k) => {
-        obj[k] = v
+        if (!!k) {
+            obj[k] = v
+        }
     })
     return obj
 }
@@ -52,20 +55,20 @@ function dataInAxiosConfigPrepare(
         ? {
             ...axiosConfig,
             params: (axiosConfig.params instanceof FormData)
-                ? formDataToRecord(axiosConfig.params)
-                : axiosConfig.params,
-            data: (axiosConfig.params instanceof FormData)
                 ? axiosConfig.params
-                : recordToFormData(axiosConfig.params)
+                : recordToFormData(axiosConfig.params),
+            data: (axiosConfig.data instanceof FormData)
+                ? axiosConfig.data
+                : recordToFormData(axiosConfig.data)
         }
         : {
             ...axiosConfig,
             params: (axiosConfig.params instanceof FormData)
                 ? formDataToRecord(axiosConfig.params)
                 : axiosConfig.params,
-            data: (axiosConfig.params instanceof FormData)
-                ? axiosConfig.params
-                : recordToFormData(axiosConfig.params)
+            data: (axiosConfig.data instanceof FormData)
+                ? formDataToRecord(axiosConfig.data)
+                : axiosConfig.data
         }
 }
 
@@ -77,7 +80,7 @@ export async function sendAjax(
         axiosConfig,
         ajaxConfig["body"] && (ajaxConfig["body"]["contentType"] === "multipart/form-data")
     )
-    return axios(axiosConfig)
+    return axios(axiosConfigProcessed)
 }
 
 export function sendAjaxSync(
@@ -100,20 +103,29 @@ export async function sendContainerAjax(
 ): Promise<ResponseSchema> {
     const formData = new FormData();
     if (!isGet(ajaxConfig)) {
-        if (!(ajaxConfig["body"]["data"] instanceof FormData)) {
+        if (!ajaxConfig["body"]) {
+            ajaxConfig["body"] = {}
+        }
+        if (!ajaxConfig["body"]["data"]) {
+            ajaxConfig["body"]["data"] = {}
+        }
+        if (!(ajaxConfig["body"]["data"] instanceof FormData)
+        ) {
             buildFormData(formData, ajaxConfig["body"]["data"])
         } else {
-            ajaxConfig["body"]["data"].forEach((v, k) => {
-                formData.append(k, v)
+            Object.keys(ajaxConfig["body"]["data"]).forEach((k) => {
+                formData.append(k, ajaxConfig["body"]["data"][k])
             })
         }
     }
-    if (!(ajaxConfig.queryParams instanceof FormData)) {
-        buildFormData(formData, ajaxConfig.queryParams)
-    } else {
-        ajaxConfig.queryParams.forEach((v, k) => {
-            formData.append(k, v)
-        })
+    if (!!ajaxConfig.queryParams) {
+        if (!(ajaxConfig.queryParams instanceof FormData)) {
+            buildFormData(formData, ajaxConfig.queryParams)
+        } else {
+            Object.keys(ajaxConfig.queryParams).forEach((k) => {
+                formData.append(k, ajaxConfig.queryParams[k])
+            })
+        }
     }
     const inputs = Array
         .from(container.getElementsByTagName('input')) as HTMLInputElement[];
@@ -159,10 +171,10 @@ export async function sendContainerAjax(
             method: ajaxConfig.method,
             extraConfig: ajaxConfig.extraConfig,
             body: {
-                contentType: ajaxConfig['body']['contentType']
+                contentType: (ajaxConfig['body'] && ajaxConfig['body']['contentType'])
                     ? ajaxConfig['body']['contentType']
                     : defaultEnctype,
-                data: FormData
+                data: formData
             },
         }
     }
@@ -190,11 +202,20 @@ export function sendFormAjax(
 ): Promise<ResponseSchema> {
     const url = form.action
     const method = form.method ? form.method : "get"
-    return sendContainerAjax({
-        url: url,
-        method: method as Method,
-        extraConfig: extra,
-    }, form)
+    const config: AjaxConfig<Data> = (method === "get")
+        ? {
+            url: url,
+            method: method as Method,
+            extraConfig: extra,
+        } : {
+            url: url,
+            method: method as Method,
+            extraConfig: extra,
+            body: {
+                contentType: form.enctype ? (form.enctype as Enctype) : defaultEnctype,
+            },
+        }
+    return sendContainerAjax(config, form)
 }
 
 export function sendFormAjaxSync(

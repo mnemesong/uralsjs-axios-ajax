@@ -53,7 +53,9 @@ exports.axios = require('axios/dist/browser/axios.cjs');
 var formDataToRecord = function (formData) {
     var obj = {};
     formData.forEach(function (v, k) {
-        obj[k] = v;
+        if (!!k) {
+            obj[k] = v;
+        }
     });
     return obj;
 };
@@ -80,14 +82,14 @@ var recordToFormData = function (rec) {
 function dataInAxiosConfigPrepare(axiosConfig, isMultipart) {
     return (isMultipart)
         ? __assign(__assign({}, axiosConfig), { params: (axiosConfig.params instanceof FormData)
-                ? formDataToRecord(axiosConfig.params)
-                : axiosConfig.params, data: (axiosConfig.params instanceof FormData)
                 ? axiosConfig.params
-                : recordToFormData(axiosConfig.params) }) : __assign(__assign({}, axiosConfig), { params: (axiosConfig.params instanceof FormData)
+                : recordToFormData(axiosConfig.params), data: (axiosConfig.data instanceof FormData)
+                ? axiosConfig.data
+                : recordToFormData(axiosConfig.data) }) : __assign(__assign({}, axiosConfig), { params: (axiosConfig.params instanceof FormData)
             ? formDataToRecord(axiosConfig.params)
-            : axiosConfig.params, data: (axiosConfig.params instanceof FormData)
-            ? axiosConfig.params
-            : recordToFormData(axiosConfig.params) });
+            : axiosConfig.params, data: (axiosConfig.data instanceof FormData)
+            ? formDataToRecord(axiosConfig.data)
+            : axiosConfig.data });
 }
 function sendAjax(ajaxConfig) {
     return __awaiter(this, void 0, void 0, function () {
@@ -95,7 +97,7 @@ function sendAjax(ajaxConfig) {
         return __generator(this, function (_a) {
             axiosConfig = (0, abstracts_1.ajaxConfigToReqSchema)(ajaxConfig);
             axiosConfigProcessed = dataInAxiosConfigPrepare(axiosConfig, ajaxConfig["body"] && (ajaxConfig["body"]["contentType"] === "multipart/form-data"));
-            return [2 /*return*/, (0, exports.axios)(axiosConfig)];
+            return [2 /*return*/, (0, exports.axios)(axiosConfigProcessed)];
         });
     });
 }
@@ -116,22 +118,30 @@ function sendContainerAjax(ajaxConfig, container) {
         return __generator(this, function (_a) {
             formData = new FormData();
             if (!(0, abstracts_1.isGet)(ajaxConfig)) {
+                if (!ajaxConfig["body"]) {
+                    ajaxConfig["body"] = {};
+                }
+                if (!ajaxConfig["body"]["data"]) {
+                    ajaxConfig["body"]["data"] = {};
+                }
                 if (!(ajaxConfig["body"]["data"] instanceof FormData)) {
                     buildFormData(formData, ajaxConfig["body"]["data"]);
                 }
                 else {
-                    ajaxConfig["body"]["data"].forEach(function (v, k) {
-                        formData.append(k, v);
+                    Object.keys(ajaxConfig["body"]["data"]).forEach(function (k) {
+                        formData.append(k, ajaxConfig["body"]["data"][k]);
                     });
                 }
             }
-            if (!(ajaxConfig.queryParams instanceof FormData)) {
-                buildFormData(formData, ajaxConfig.queryParams);
-            }
-            else {
-                ajaxConfig.queryParams.forEach(function (v, k) {
-                    formData.append(k, v);
-                });
+            if (!!ajaxConfig.queryParams) {
+                if (!(ajaxConfig.queryParams instanceof FormData)) {
+                    buildFormData(formData, ajaxConfig.queryParams);
+                }
+                else {
+                    Object.keys(ajaxConfig.queryParams).forEach(function (k) {
+                        formData.append(k, ajaxConfig.queryParams[k]);
+                    });
+                }
             }
             inputs = Array
                 .from(container.getElementsByTagName('input'));
@@ -182,10 +192,10 @@ function sendContainerAjax(ajaxConfig, container) {
                     method: ajaxConfig.method,
                     extraConfig: ajaxConfig.extraConfig,
                     body: {
-                        contentType: ajaxConfig['body']['contentType']
+                        contentType: (ajaxConfig['body'] && ajaxConfig['body']['contentType'])
                             ? ajaxConfig['body']['contentType']
                             : abstracts_1.defaultEnctype,
-                        data: FormData
+                        data: formData
                     },
                 };
             }
@@ -207,11 +217,20 @@ exports.sendContainerDataAjaxSync = sendContainerDataAjaxSync;
 function sendFormAjax(form, extra) {
     var url = form.action;
     var method = form.method ? form.method : "get";
-    return sendContainerAjax({
+    var config = (method === "get")
+        ? {
+            url: url,
+            method: method,
+            extraConfig: extra,
+        } : {
         url: url,
         method: method,
         extraConfig: extra,
-    }, form);
+        body: {
+            contentType: form.enctype ? form.enctype : abstracts_1.defaultEnctype,
+        },
+    };
+    return sendContainerAjax(config, form);
 }
 exports.sendFormAjax = sendFormAjax;
 function sendFormAjaxSync(form, extra, onResponse, onRejected) {
