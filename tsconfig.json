@@ -1,11 +1,16 @@
 {
-    "compilerOptions": {
-        "outDir": "js",
-        "rootDir": "ts",
-        "target": "ES5",
-        "declaration": true,
-        "esModuleInterop": true,
-      },
-    "exclude": ["node_modules", "**/*.spec.ts"],
-    "include": ["ts/**/*.ts"]
+  "compilerOptions": {
+    "outDir": "js",
+    "rootDir": "ts",
+    "target": "ES5",
+    "declaration": true,
+    "esModuleInterop": true,
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ],
+  "include": [
+    "ts/**/*.ts"
+  ]
 }
