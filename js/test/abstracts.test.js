@@ -37,7 +37,7 @@ var abstracts = __importStar(require("../src/abstracts"));
             method: "get",
             url: "/some-where",
             params: { k1: "v1", k2: "v2" },
-            data: null,
+            data: undefined,
         };
         assert.deepStrictEqual(result, nominal);
     });
@@ -60,7 +60,7 @@ var abstracts = __importStar(require("../src/abstracts"));
             method: "get",
             url: "/some-where",
             params: { k1: "v1", k2: "v2" },
-            data: null,
+            data: undefined,
             headers: { "Content-type": "aboba" },
             timeout: 5000,
             auth: {
@@ -91,7 +91,7 @@ var abstracts = __importStar(require("../src/abstracts"));
         var nominal = {
             method: "put",
             url: "/some-where",
-            params: null,
+            params: undefined,
             data: { k1: "v1", k2: "v2" },
             headers: { "Content-Type": "multipart/form-data" },
             timeout: 5000,

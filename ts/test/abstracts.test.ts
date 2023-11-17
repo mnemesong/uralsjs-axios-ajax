@@ -13,7 +13,7 @@ describe("test ajaxConfigToRequestSchema", () => {
             method: "get",
             url: "/some-where",
             params: { k1: "v1", k2: "v2" },
-            data: null,
+            data: undefined,
         }
         assert.deepStrictEqual(result, nominal)
     })
@@ -37,7 +37,7 @@ describe("test ajaxConfigToRequestSchema", () => {
             method: "get",
             url: "/some-where",
             params: { k1: "v1", k2: "v2" },
-            data: null,
+            data: undefined,
             headers: { "Content-type": "aboba" },
             timeout: 5000,
             auth: {
@@ -69,7 +69,7 @@ describe("test ajaxConfigToRequestSchema", () => {
         const nominal: abstracts.RequestSchema<Record<string, any>> = {
             method: "put",
             url: "/some-where",
-            params: null,
+            params: undefined,
             data: { k1: "v1", k2: "v2" },
             headers: { "Content-Type": "multipart/form-data" },
             timeout: 5000,

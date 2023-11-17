@@ -2,15 +2,10 @@ import { Axios } from "axios"
 import {
     AjaxConfig,
     ajaxConfigToReqSchema,
-    RequestSchema,
     ResponseSchema,
-    isGet,
-    defaultEnctype,
-    ExtraConfig,
-    Method
 } from "./abstracts"
 
-export const axios = require('axios/dist/node/axios.cjs') as typeof Axios.constructor
+export const axios = require('axios') as typeof Axios.constructor
 
 export type Data = Record<string | number, any>
 

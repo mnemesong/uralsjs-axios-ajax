@@ -7,7 +7,8 @@
     "tsc": "tsc",
     "test:unit": "mocha ./js/test",
     "build:browser": "browserify ./js/app-test/browser-test.js > test-client/bundle.js",
-    "run:input-server": "node ./js/app-test/test-server-input"
+    "run:input-server": "node ./js/app-test/test-server-input",
+    "run:output-server": "node ./js/app-test/test-server-output"
   },
   "keywords": [],
   "author": "Anatoly Starodubtsev <Tostar74@mail.ru>",
@@ -26,8 +27,5 @@
   },
   "dependencies": {
     "axios": "^1.6.2"
-  },
-  "exports": {
-    "./dist/browser/axios.cjs": "./dist/browser/axios.cjs"
   }
 }

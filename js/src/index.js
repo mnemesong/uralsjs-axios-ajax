@@ -23,6 +23,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.node = exports.browser = void 0;
+exports.defaultEnctype = exports.node = exports.browser = void 0;
 exports.browser = __importStar(require("./browser"));
 exports.node = __importStar(require("./node"));
+var abstracts_1 = require("./abstracts");
+Object.defineProperty(exports, "defaultEnctype", { enumerable: true, get: function () { return abstracts_1.defaultEnctype; } });
