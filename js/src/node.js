@@ -38,13 +38,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendAjaxSync = exports.sendAjax = exports.axios = void 0;
 var abstracts_1 = require("./abstracts");
-exports.axios = require('axios');
+var axios = function () { return require('axios'); };
+exports.axios = axios;
 function sendAjax(ajaxConfig) {
     return __awaiter(this, void 0, void 0, function () {
         var axiosConfig;
         return __generator(this, function (_a) {
             axiosConfig = (0, abstracts_1.ajaxConfigToReqSchema)(ajaxConfig);
-            return [2 /*return*/, (0, exports.axios)(axiosConfig)];
+            return [2 /*return*/, (0, exports.axios)()(axiosConfig)];
         });
     });
 }

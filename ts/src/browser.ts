@@ -11,7 +11,7 @@ import {
     Enctype
 } from "./abstracts";
 
-export const axios = require('axios/dist/browser/axios.cjs') as typeof Axios.constructor
+export const axios = () => require('axios/dist/browser/axios.cjs') as typeof Axios.constructor
 
 export type Data = FormData | Record<string | number, any>
 
@@ -80,7 +80,7 @@ export async function sendAjax(
         axiosConfig,
         ajaxConfig["body"] && (ajaxConfig["body"]["contentType"] === "multipart/form-data")
     )
-    return axios(axiosConfigProcessed)
+    return axios()(axiosConfigProcessed)
 }
 
 export function sendAjaxSync(

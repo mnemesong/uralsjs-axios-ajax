@@ -49,7 +49,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendFormAjaxSync = exports.sendFormAjax = exports.sendContainerDataAjaxSync = exports.sendContainerAjax = exports.sendAjaxSync = exports.sendAjax = exports.axios = void 0;
 var abstracts_1 = require("./abstracts");
-exports.axios = require('axios/dist/browser/axios.cjs');
+var axios = function () { return require('axios/dist/browser/axios.cjs'); };
+exports.axios = axios;
 var formDataToRecord = function (formData) {
     var obj = {};
     formData.forEach(function (v, k) {
@@ -97,7 +98,7 @@ function sendAjax(ajaxConfig) {
         return __generator(this, function (_a) {
             axiosConfig = (0, abstracts_1.ajaxConfigToReqSchema)(ajaxConfig);
             axiosConfigProcessed = dataInAxiosConfigPrepare(axiosConfig, ajaxConfig["body"] && (ajaxConfig["body"]["contentType"] === "multipart/form-data"));
-            return [2 /*return*/, (0, exports.axios)(axiosConfigProcessed)];
+            return [2 /*return*/, (0, exports.axios)()(axiosConfigProcessed)];
         });
     });
 }

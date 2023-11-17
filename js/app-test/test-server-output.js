@@ -59,8 +59,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var ajax = __importStar(require("../src/node"));
-ajax.sendAjaxSync({
+var ajax = __importStar(require("../src"));
+ajax.node.sendAjaxSync({
     url: "http://localhost:3000/get",
     queryParams: {
         key1: "VAL1",
@@ -73,7 +73,7 @@ ajax.sendAjaxSync({
         return [2 /*return*/];
     });
 }); });
-ajax.sendAjaxSync({
+ajax.node.sendAjaxSync({
     url: "http://localhost:3000/post",
     method: "post",
     body: {

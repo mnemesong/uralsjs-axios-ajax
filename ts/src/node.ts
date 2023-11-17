@@ -5,7 +5,7 @@ import {
     ResponseSchema,
 } from "./abstracts"
 
-export const axios = require('axios') as typeof Axios.constructor
+export const axios = () => require('axios') as typeof Axios.constructor
 
 export type Data = Record<string | number, any>
 
@@ -13,7 +13,7 @@ export async function sendAjax(
     ajaxConfig: AjaxConfig<Data>
 ): Promise<ResponseSchema> {
     const axiosConfig = ajaxConfigToReqSchema(ajaxConfig)
-    return axios(axiosConfig)
+    return axios()(axiosConfig)
 }
 
 export function sendAjaxSync(

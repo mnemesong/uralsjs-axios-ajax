@@ -1,6 +1,6 @@
-import * as ajax from "../src/node"
+import * as ajax from "../src"
 
-ajax.sendAjaxSync({
+ajax.node.sendAjaxSync({
     url: "http://localhost:3000/get",
     queryParams: {
         key1: "VAL1",
@@ -11,7 +11,7 @@ ajax.sendAjaxSync({
     console.log("get response: ", res.data)
 })
 
-ajax.sendAjaxSync({
+ajax.node.sendAjaxSync({
     url: "http://localhost:3000/post",
     method: "post",
     body: {
